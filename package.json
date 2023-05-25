@@ -1,0 +1,17 @@
+{
+  "name": "image-gallery-uploader",
+  "version": "1.0.0",
+  "description": "Image Gallery can view, upload and update your image file.",
+  "main": "ImageGalleryUploader.js",
+  "repository": "https://github.com/ShaonMajumder/convert-form-data.git",
+  "author": "Shaon Majumder <smazoomder@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "keywords": [
+    "image",
+    "gallery",
+    "viewer",
+    "uploader"
+  ],
+  "homepage": "https://my-new-project-website.com"
+}
