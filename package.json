@@ -1,18 +1,13 @@
 {
   "name": "image-gallery-uploader",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Image Gallery can view, upload and update your image file.",
   "main": "ImageGalleryUploader.js",
   "repository": "https://github.com/ShaonMajumder/convert-form-data.git",
   "author": "Shaon Majumder <smazoomder@gmail.com>",
   "license": "MIT",
   "private": false,
-  "babel": {
-    "presets": [
-      "@babel/preset-env",
-      "@babel/preset-react"
-    ]
-  },
+  "presets": ["@babel/preset-react"],
   "keywords": [
     "image",
     "gallery",
