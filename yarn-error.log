@@ -29,7 +29,7 @@ Trace:
 npm manifest: 
   {
     "name": "image-gallery-uploader",
-    "version": "1.0.14",
+    "version": "1.0.16",
     "description": "Image Gallery can view, upload and update your image file.",
     "main": "ImageGalleryUploader.js",
     "repository": "https://github.com/ShaonMajumder/convert-form-data.git",

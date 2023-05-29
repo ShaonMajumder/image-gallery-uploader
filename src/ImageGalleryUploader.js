@@ -1,4 +1,6 @@
+import React from 'react'
 import { useState, useEffect, useRef } from 'react';
+import { Button, Container, Form, Row } from 'react-bootstrap';
 import { ImCross } from "react-icons/im";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { notify } from "./Toast";
@@ -6,9 +8,9 @@ import { SUCCESS, ERROR } from "./MessageConst";
 import './ImageGalleryUploader.css';
 
 const ImageGalleryUploader = ({isImageUploader, imageArray, handleImage, handleRemoveImage, validation}) => {
-  const [dragActive, setDragActive] = useState(false);
+  const [dragActive, setDragActive] = React.useState(false);
   // ref
-  const inputRef = useRef(null);
+  const inputRef = React.useRef(null);
   
   // handle drag events
   const handleDrag = function(e) {
@@ -119,12 +121,12 @@ const handleFormClick = (item) => {
   }
 }
 
-const scrollContainerRef = useRef(null);
-const [isMouseDown, setIsMouseDown] = useState(false);
-const [scrollLeft, setScrollLeft] = useState(0);
-const [mouseDownX, setMouseDownX] = useState(0);
-const hasMouseMoved = useRef(false);
-const [isMouseReleased, setIsMouseReleased] = useState(false);
+const scrollContainerRef = React.useRef(null);
+const [isMouseDown, setIsMouseDown] = React.useState(false);
+const [scrollLeft, setScrollLeft] = React.useState(0);
+const [mouseDownX, setMouseDownX] = React.useState(0);
+const hasMouseMoved = React.useRef(false);
+const [isMouseReleased, setIsMouseReleased] = React.useState(false);
 
 const handleMouseDown = (e) => {
   scrollContainerRef.current.style.cursor = 'grabbing';
@@ -205,7 +207,7 @@ const handleMouseLeave = () => {
   }
 };
 
-useEffect(() => {
+React.useEffect(() => {
   const handleWindowMouseUp = () => {
     // scrollContainerRef.current.style.cursor = 'default';
     // Check if the mouse button is released outside the div
