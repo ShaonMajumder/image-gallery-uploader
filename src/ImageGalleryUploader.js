@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Button, Container, Form, Row } from 'react-bootstrap';
 import { ImCross } from "react-icons/im";
 import { AiOutlineCloudUpload } from "react-icons/ai";
-import { notify } from "../Toast";
+import { notify } from "./Toast";
 import { SUCCESS, ERROR } from "./MessageConst";
 import './ImageGalleryUploader.css';
 

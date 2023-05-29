@@ -29,12 +29,12 @@ var ImageGalleryUploader = function ImageGalleryUploader(_ref) {
     handleImage = _ref.handleImage,
     handleRemoveImage = _ref.handleRemoveImage,
     validation = _ref.validation;
-  var _useState = (0, _react.useState)(false),
-    _useState2 = _slicedToArray(_useState, 2),
-    dragActive = _useState2[0],
-    setDragActive = _useState2[1];
+  var _React$useState = _react["default"].useState(false),
+    _React$useState2 = _slicedToArray(_React$useState, 2),
+    dragActive = _React$useState2[0],
+    setDragActive = _React$useState2[1];
   // ref
-  var inputRef = (0, _react.useRef)(null);
+  var inputRef = _react["default"].useRef(null);
 
   // handle drag events
   var handleDrag = function handleDrag(e) {
@@ -173,24 +173,24 @@ var ImageGalleryUploader = function ImageGalleryUploader(_ref) {
       onButtonClick();
     }
   };
-  var scrollContainerRef = (0, _react.useRef)(null);
-  var _useState3 = (0, _react.useState)(false),
-    _useState4 = _slicedToArray(_useState3, 2),
-    isMouseDown = _useState4[0],
-    setIsMouseDown = _useState4[1];
-  var _useState5 = (0, _react.useState)(0),
-    _useState6 = _slicedToArray(_useState5, 2),
-    scrollLeft = _useState6[0],
-    setScrollLeft = _useState6[1];
-  var _useState7 = (0, _react.useState)(0),
-    _useState8 = _slicedToArray(_useState7, 2),
-    mouseDownX = _useState8[0],
-    setMouseDownX = _useState8[1];
-  var hasMouseMoved = (0, _react.useRef)(false);
-  var _useState9 = (0, _react.useState)(false),
-    _useState10 = _slicedToArray(_useState9, 2),
-    isMouseReleased = _useState10[0],
-    setIsMouseReleased = _useState10[1];
+  var scrollContainerRef = _react["default"].useRef(null);
+  var _React$useState3 = _react["default"].useState(false),
+    _React$useState4 = _slicedToArray(_React$useState3, 2),
+    isMouseDown = _React$useState4[0],
+    setIsMouseDown = _React$useState4[1];
+  var _React$useState5 = _react["default"].useState(0),
+    _React$useState6 = _slicedToArray(_React$useState5, 2),
+    scrollLeft = _React$useState6[0],
+    setScrollLeft = _React$useState6[1];
+  var _React$useState7 = _react["default"].useState(0),
+    _React$useState8 = _slicedToArray(_React$useState7, 2),
+    mouseDownX = _React$useState8[0],
+    setMouseDownX = _React$useState8[1];
+  var hasMouseMoved = _react["default"].useRef(false);
+  var _React$useState9 = _react["default"].useState(false),
+    _React$useState10 = _slicedToArray(_React$useState9, 2),
+    isMouseReleased = _React$useState10[0],
+    setIsMouseReleased = _React$useState10[1];
   var handleMouseDown = function handleMouseDown(e) {
     scrollContainerRef.current.style.cursor = 'grabbing';
     setIsMouseDown(true);
@@ -267,7 +267,7 @@ var ImageGalleryUploader = function ImageGalleryUploader(_ref) {
       setIsMouseReleased(true);
     }
   };
-  (0, _react.useEffect)(function () {
+  _react["default"].useEffect(function () {
     var handleWindowMouseUp = function handleWindowMouseUp() {
       // scrollContainerRef.current.style.cursor = 'default';
       // Check if the mouse button is released outside the div
@@ -344,7 +344,8 @@ var ImageGalleryUploader = function ImageGalleryUploader(_ref) {
     onDragLeave: handleDrag,
     onDragOver: handleDrag,
     onDrop: handleDrop
-  }), imageArray === undefined ? '' : imageArray.length && isImageUploader ? /*#__PURE__*/_react["default"].createElement(_reactBootstrap.Button, {
+  }), imageArray === undefined ? '' : imageArray.length && isImageUploader ? /*#__PURE__*/_react["default"].createElement("a", {
+    className: "links",
     onClick: onButtonClick
   }, "Upload More Images") : ''));
 };
@@ -485,45 +486,3 @@ var INFO = 'INFO';
 exports.INFO = INFO;
 var WARNING = 'WARNING';
 exports.WARNING = WARNING;
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.notify = void 0;
-var _reactToastify = require("react-toastify");
-var _MessageConst = require("./MessageConst");
-var notify = function notify(message, type) {
-  switch (type) {
-    case _MessageConst.SUCCESS:
-      _reactToastify.toast.success(message, {
-        position: _reactToastify.toast.POSITION.TOP_RIGHT,
-        theme: "colored"
-      });
-      break;
-    case _MessageConst.ERROR:
-      _reactToastify.toast.error(message, {
-        position: _reactToastify.toast.POSITION.TOP_RIGHT,
-        theme: "colored"
-      });
-      break;
-    case _MessageConst.INFO:
-      _reactToastify.toast.info(message, {
-        position: _reactToastify.toast.POSITION.TOP_RIGHT,
-        theme: "colored"
-      });
-      break;
-    case _MessageConst.WARNING:
-      _reactToastify.toast.warn(message, {
-        position: _reactToastify.toast.POSITION.TOP_RIGHT,
-        theme: "colored"
-      });
-      break;
-    default:
-      _reactToastify.toast.info(message, {
-        position: _reactToastify.toast.POSITION.TOP_RIGHT,
-        theme: "colored"
-      });
-  }
-};
-exports.notify = notify;
