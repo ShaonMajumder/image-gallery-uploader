@@ -23,7 +23,8 @@
     "image",
     "gallery",
     "viewer",
-    "uploader"
+    "uploader",
+    "multi-image uploader"
   ],
   "homepage": "https://my-new-project-website.com",
   "scripts": {

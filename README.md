@@ -1,5 +1,10 @@
 # image-gallery-uploader
 Image Gallery can view, upload and update your image file.
+# Features
+- Multi Image Uploader
+- Drag and Drop / Click to Select Multiple Image
+- Image Gallery with Good slider
+- Multiple Modes
 
 # Table of Contents
     - Screenshots
@@ -22,6 +27,16 @@ After selecting image it will look like this in create/uploading mode -
 This is an example of editing images, where you can remove and add new image also -
 ![Initial State](https://github.com/ShaonMajumder/image-gallery-uploader/blob/HEAD/pictures/update.png)
 
+# Installation
+**npm**:
+```bash
+npm install image-gallery-uploader
+```
+**or**,
+**yarn**
+```bash
+yarn add image-gallery-uploader
+```
 # Api Reference
 ## fetchEditDBImages
 
