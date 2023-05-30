@@ -1,6 +1,6 @@
 {
   "name": "image-gallery-uploader",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "description": "Image Gallery can view, upload and update your image file.",
   "main": "ImageGalleryUploader.js",
   "repository": "https://github.com/ShaonMajumder/image-gallery-uploader.git",
