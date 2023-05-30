@@ -3,7 +3,7 @@
   "version": "1.0.25",
   "description": "Image Gallery can view, upload and update your image file.",
   "main": "ImageGalleryUploader.js",
-  "repository": "https://github.com/ShaonMajumder/convert-form-data.git",
+  "repository": "https://github.com/ShaonMajumder/image-gallery-uploader.git",
   "author": "Shaon Majumder <smazoomder@gmail.com>",
   "license": "MIT",
   "presets": [
