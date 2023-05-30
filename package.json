@@ -26,7 +26,7 @@
     "uploader",
     "multi-image uploader"
   ],
-  "homepage": "https://my-new-project-website.com",
+  "homepage": "https://github.com/ShaonMajumder/image-gallery-uploader",
   "scripts": {
     "build": "./node_modules/.bin/babel src --out-file ImageGalleryUploader.js",
     "test": "echo \"Error: no test specified\" && exit 1"
