@@ -402,12 +402,6 @@ var convertImageUrlToFile = /*#__PURE__*/function () {
   };
 }();
 exports.convertImageUrlToFile = convertImageUrlToFile;
-var filterValue = function filterValue(value) {
-  value = value == 'true' || value === true ? 1 : value;
-  value = value == 'false' || value === false ? 0 : value;
-  value = value == null || Number.isNaN(value) || value == 'null' ? '' : value;
-  return value;
-};
 var fetchDBImages = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(images, images_url, imageViewerArray, setImageViewerArray) {
     var fileObj;

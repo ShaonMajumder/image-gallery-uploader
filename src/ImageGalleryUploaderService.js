@@ -11,13 +11,6 @@ export const convertImageUrlToFile = async (imageUrl) => {
   }
 };
 
-const filterValue = (value) => {
-  value = (value == 'true' || value === true) ? 1 : value;
-  value = (value == 'false' || value === false) ? 0 : value;
-  value = (value == null || Number.isNaN(value) || value == 'null') ? '' : value;
-  return value;
-}
-
 export const fetchDBImages = async (images,images_url,imageViewerArray,setImageViewerArray) => {
   let  fileObj = [];
   images.map((element, index) =>{
