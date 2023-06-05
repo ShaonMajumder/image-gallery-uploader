@@ -1,12 +1,16 @@
 # image-gallery-uploader
+
 Image Gallery can view, upload and update your image file.
+
 # Features
+
 - Multi Image Uploader
 - Drag and Drop / Click to Select Multiple Image
 - Image Gallery with Good slider
 - Multiple Modes
 
 # Table of Contents
+
     - Screenshots
     - Installation
     - API Reference
@@ -14,7 +18,9 @@ Image Gallery can view, upload and update your image file.
         - convertImageUrlToFile
         - fetchDBImages
         - fetchEditDBImages
+
 # Screenshots
+
 Intially the component looks like this if it is in uploading mode.
 ![Initial State](https://github.com/ShaonMajumder/image-gallery-uploader/blob/HEAD/pictures/inital.jpg)
 
@@ -28,9 +34,10 @@ This is an example of editing images, where you can remove and add new image als
 ![Initial State](https://github.com/ShaonMajumder/image-gallery-uploader/blob/HEAD/pictures/update.png)
 
 # Api Reference
-## fetchEditDBImages
 
-The `ImageGalleryUploader` component is a reusable component that provides an interface for uploading and displaying images. It supports drag and drop functionality, image validation, and the ability to remove uploaded images. 
+## ImageGalleryUploader
+
+The `ImageGalleryUploader` component is a reusable component that provides an interface for uploading and displaying images. It supports drag and drop functionality, image validation, and the ability to remove uploaded images.
 
 It has 3 modes.
 
@@ -49,7 +56,7 @@ It has 3 modes.
 ### Usage
 
 ```javascript
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const MAX_IMAGE_SIZE = 5; // Maximum file size in MB
 const MAX_IMAGE_COUNT = 10; // Maximum number of files allowed
@@ -57,7 +64,7 @@ const MAX_IMAGE_COUNT = 10; // Maximum number of files allowed
 const YourComponent = () => {
   const [imageViewerArray, setImageViewerArray] = useState([]);
   const [imageFormdataArray, setImageFormdataArray] = useState([]);
-  
+
   const uploadMultipleFiles = (files) => {
     // Handle the selected image files
     let fileObj = [];
@@ -67,7 +74,7 @@ const YourComponent = () => {
     }
     setImageViewerArray([...imageViewerArray, ...fileObj]);
   };
-  
+
   const handleRemoveImage = (id) => {
     // Remove the image at the specified index
     let objA = imageViewerArray.filter((img, i) => i !== id);
@@ -75,22 +82,22 @@ const YourComponent = () => {
     setImageViewerArray(objA);
     setImageFormdataArray(objB);
   };
-  
+
   return (
     <div>
       {/* Other content */}
-      
-      <ImageGalleryUploader 
-        isImageUploader={true} 
+
+      <ImageGalleryUploader
+        isImageUploader={true}
         validation={{
           maxFileSize: MAX_IMAGE_SIZE,
-          maxFileCount: MAX_IMAGE_COUNT
-        }} 
-        imageArray={imageViewerArray} 
-        handleImage={uploadMultipleFiles} 
+          maxFileCount: MAX_IMAGE_COUNT,
+        }}
+        imageArray={imageViewerArray}
+        handleImage={uploadMultipleFiles}
         handleRemoveImage={handleRemoveImage}
       />
-      
+
       {/* Other content */}
     </div>
   );
@@ -99,34 +106,39 @@ const YourComponent = () => {
 export default YourComponent;
 ```
 
-
-
 ## convertImageUrlToFile
 
 The **convertImageUrlToFile** function is used to convert an image URL to a File object asynchronously.
+
 ### Syntax
+
 ```javascript
-convertImageUrlToFile(imageUrl)
+convertImageUrlToFile(imageUrl);
 ```
+
 ### Parameters
+
     - `imageUrl` : A string representing the URL of the image to be converted.
+
 ### Return Value
+
 A Promise that resolves to a File object representing the image file, or null if an error occurs during the conversion process.
 
 ### Usage
-```javascript
-import { convertImageUrlToFile } from 'image-gallery-uploader';
 
-const imageUrl = 'https://example.com/image.jpg';
+```javascript
+import { convertImageUrlToFile } from "image-gallery-uploader";
+
+const imageUrl = "https://example.com/image.jpg";
 
 convertImageUrlToFile(imageUrl)
   .then((file) => {
     // File conversion successful
-    console.log('Converted file:', file);
+    console.log("Converted file:", file);
   })
   .catch((error) => {
     // Error occurred during conversion
-    console.error('Error converting image URL to file:', error);
+    console.error("Error converting image URL to file:", error);
   });
 ```
 
@@ -138,8 +150,6 @@ If the conversion is successful, the Promise resolves with the **`File`** object
 
 That concludes the documentation for the **`convertImageUrlToFile`** function.
 
-
-
 ## fetchDBImages
 
 The **`fetchDBImages`** function is used to fetch and append image URLs from a database to an existing array.
@@ -147,7 +157,7 @@ The **`fetchDBImages`** function is used to fetch and append image URLs from a d
 ### Syntax
 
 ```javascript
-fetchDBImages(images, images_url, imageViewerArray, setImageViewerArray)
+fetchDBImages(images, images_url, imageViewerArray, setImageViewerArray);
 ```
 
 ### Parameters
@@ -164,15 +174,15 @@ It converts given images to File Objects and set it to `imageViewerArray`,
 ### Usage
 
 ```javascript
-import { fetchDBImages } from 'image-gallery-uploader';
+import { fetchDBImages } from "image-gallery-uploader";
 
 const images = [
-  { file: 'image1.jpg' },
-  { file: 'image2.jpg' },
-  { file: 'image3.jpg' },
+  { file: "image1.jpg" },
+  { file: "image2.jpg" },
+  { file: "image3.jpg" },
 ];
 
-const images_url = 'https://example.com/images/';
+const images_url = "https://example.com/images/";
 const [imageViewerArray, setImageViewerArray] = useState([]);
 
 fetchDBImages(images, images_url, imageViewerArray, setImageViewerArray);
@@ -195,7 +205,14 @@ The `fetchEditDBImages` function is used to fetch and append image URLs from a d
 ### Syntax
 
 ```javascript
-fetchEditDBImages(images, images_url, imageViewerArray, setImageViewerArray, imageFormdataArray, setImageFormdataArray)
+fetchEditDBImages(
+  images,
+  images_url,
+  imageViewerArray,
+  setImageViewerArray,
+  imageFormdataArray,
+  setImageFormdataArray
+);
 ```
 
 ### Parameters
@@ -214,15 +231,18 @@ It loads images from Response and pass the file objects to imageViewerArray for 
 ### Usage
 
 ```javascript
-import { fetchEditDBImages, convertImageUrlToFile } from 'image-gallery-uploader';
+import {
+  fetchEditDBImages,
+  convertImageUrlToFile,
+} from "image-gallery-uploader";
 
 const images = [
-  { file: 'image1.jpg' },
-  { file: 'image2.jpg' },
-  { file: 'image3.jpg' },
+  { file: "image1.jpg" },
+  { file: "image2.jpg" },
+  { file: "image3.jpg" },
 ];
 
-const images_url = 'https://example.com/images/';
+const images_url = "https://example.com/images/";
 
 const [imageViewerArray, setImageViewerArray] = useState([]);
 const [imageFormdataArray, setImageFormdataArray] = useState([]);
@@ -235,7 +255,6 @@ fetchEditDBImages(
   imageFormdataArray,
   setImageFormdataArray
 );
-
 ```
 
 The `fetchEditDBImages` function iterates over the `images` array, fetches the corresponding image URLs from the `images_url`, and performs the following actions for each image:
