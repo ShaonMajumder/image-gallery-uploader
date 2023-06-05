@@ -2,7 +2,7 @@
   "name": "image-gallery-uploader",
   "version": "1.0.27",
   "description": "Image Gallery can view, upload and update your image file.",
-  "main": "ImageGalleryUploader.js",
+  "main": "build/ImageGalleryUploader.js",
   "repository": "https://github.com/ShaonMajumder/image-gallery-uploader.git",
   "author": "Shaon Majumder <smazoomder@gmail.com>",
   "license": "MIT",
@@ -28,7 +28,7 @@
   ],
   "homepage": "https://github.com/ShaonMajumder/image-gallery-uploader",
   "scripts": {
-    "build": "./node_modules/.bin/babel src --out-file ImageGalleryUploader.js",
+    "build": "./node_modules/.bin/babel src/* --out-dir build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
