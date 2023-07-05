@@ -24,7 +24,8 @@
     "gallery",
     "viewer",
     "uploader",
-    "multi-image uploader"
+    "multi-image uploader",
+    "dropzone"
   ],
   "homepage": "https://github.com/ShaonMajumder/image-gallery-uploader",
   "scripts": {
