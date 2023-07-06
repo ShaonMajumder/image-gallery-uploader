@@ -8,7 +8,7 @@ import { SUCCESS, ERROR } from "./MessageConst";
 import './ImageGalleryUploader.css';
 export {convertImageUrlToFile,fetchDBImages,fetchEditDBImages} from './ImageGalleryUploaderService';
 
-const ImageGalleryUploader = ({isImageUploader, imageArray, handleImage, handleRemoveImage, validation}) => {
+const ImageGalleryUploader = ({is2D = false, isImageUploader, imageArray, handleImage, handleRemoveImage, validation, rowIndex2D, imageArray2D, handleImage2D, handleRemoveImage2D}) => {
   const [dragActive, setDragActive] = React.useState(false);
   // ref
   const inputRef = React.useRef(null);
@@ -87,13 +87,63 @@ const ImageGalleryUploader = ({isImageUploader, imageArray, handleImage, handleR
       }
     }
   }
+
+  const handleAndValidateImage2D = async (filesArray) => {
+    const files = Array.from(filesArray);      
+    if (files.length > 0) {
+      // filtering & notifying valid images
+      const validImageFiles = await Promise.all(
+        files.map(async (file) => {
+          try {
+            const isValid = await isValidImage(file);
+            return isValid ? file : null;
+          } catch (error) {
+            return null;
+          }
+        })
+      );
+      const filteredFiles = validImageFiles.filter((file) => file !== null);
+
+      if (validation.maxFileCount && (files.length+imageArray2D[rowIndex2D]?.length ?? 0) > validation.maxFileCount) {
+          notify(`Maximum file count exceeded. Only ${validation.maxFileCount} files will be selected.`, ERROR);
+      }
+
+      const selectedFiles = filteredFiles.slice(0, validation.maxFileCount - (imageArray2D[rowIndex2D]?.length ?? 0));
+
+      const filteredSelectedFiles = selectedFiles.filter(
+        (file) => {
+          if (file && file.size > validation.maxFileSize * 1024 * 1024) {
+            notify(
+              `File size exceeds ${validation.maxFileSize}MB: ${file.name}. Please select a smaller file.`,
+              ERROR
+            );
+          }
+          return file.size <= validation.maxFileSize * 1024 * 1024
+        }
+      );
+      
+      if (filteredSelectedFiles.length > 0) {
+        handleImage2D(rowIndex2D,filteredSelectedFiles);
+      }else{
+        notify(
+          `There is no valid images to import`,
+          ERROR
+        );
+      }
+    }
+  }
   
   const handleDrop = async (e) => {
       e.preventDefault();
       e.stopPropagation();
       if (isImageUploader) {
         setDragActive(false);
-        handleAndValidateImage(e.dataTransfer.files)
+        if(is2D){
+          handleAndValidateImage2D(e.dataTransfer.files);
+        } else{
+          handleAndValidateImage(e.dataTransfer.files);
+        }
+        
       }
   };
     
@@ -104,7 +154,11 @@ const ImageGalleryUploader = ({isImageUploader, imageArray, handleImage, handleR
       e.preventDefault();
       if(isImageUploader){
           if (e.target.files && e.target.files[0]) {
-              handleAndValidateImage(e.target.files)
+            if(is2D){
+              handleAndValidateImage2D(e.target.files);
+            } else{
+              handleAndValidateImage(e.target.files);
+            }
           }
       }
   };
@@ -121,6 +175,13 @@ const handleFormClick = (item) => {
       onButtonClick();
   }
 }
+
+const handleFormClick2D = (item) => {
+  if(!(imageArray2D[rowIndex2D]?.length ?? 0)){
+      onButtonClick();
+  }
+}
+
 
 const scrollContainerRef = React.useRef(null);
 const [isMouseDown, setIsMouseDown] = React.useState(false);
@@ -225,76 +286,175 @@ React.useEffect(() => {
 }, [isMouseDown]);
 
 return (
-  <>
-  {
-    (!isImageUploader && (imageArray === undefined || imageArray.length == 0) ) ? '' :
-      (
-        <form onClick={handleFormClick}
-            id="form-file-upload" 
-            onDragEnter={handleDrag} 
-            onSubmit={(e) => e.preventDefault()}
-        >
-          <input 
-            ref={inputRef} 
-            id="input-file-upload" 
-            type="file"
-            controlId="validationFormik01" 
-            onChange={handleChange}
-            accept="image/jpg, image/jpeg, image/gif, image/bmp, image/svg" 
-            multiple={true}
-          />
-          <div 
-            className="image-gallery-uploader-container form-group multi-preview text-center d-flex align-items-center"
-            ref={scrollContainerRef}
-            
-            onMouseDown={handleMouseDown}
-            onMouseUp={handleMouseUp}
-            onMouseMove={handleMouseMove}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+    <>
+    {
+      ( is2D ) ? 
+        (
+          (!isImageUploader && (imageArray2D[rowIndex2D] === undefined || imageArray2D[rowIndex2D].length == 0) ) ? '' :
+            (
+              <form onClick={(is2D) ? handleFormClick2D : handleFormClick}
+                  id="form-file-upload" 
+                  onDragEnter={handleDrag} 
+                  onSubmit={(e) => e.preventDefault()}
+              >
+                <input 
+                  ref={inputRef} 
+                  id={"input-file-upload"+rowIndex2D}
+                  class="input-file-upload"
+                  type="file"
+                  controlId="validationFormik01" 
+                  onChange={handleChange}
+                  accept="image/jpg, image/jpeg, image/gif, image/bmp, image/svg" 
+                  multiple={true}
+                />
+                <div 
+                  className="image-gallery-uploader-container form-group multi-preview text-center d-flex align-items-center"
+                  ref={scrollContainerRef}
+                  onClick={(e)=>{
+                    e.stopPropagation();
+                    if(isImageUploader & ( imageArray2D[rowIndex2D] === undefined || imageArray2D[rowIndex2D].length == 0) ){
+                      inputRef.current.click();
+                    }
+                  }}
+                  onMouseDown={handleMouseDown}
+                  onMouseUp={handleMouseUp}
+                  onMouseMove={handleMouseMove}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
 
-            style={{ userSelect: 'none' }}
-          >
-            {
-              (imageArray === undefined || imageArray.length == 0) ? 
-                  ( !isImageUploader ) ? '' : (
-                    <div style={{
-                      backgroundImage: `url(${AiOutlineCloudUpload})`,
-                      margin:"0 auto"}}>                      
-                      <span variant="success">Choose images to Upload</span>
-                      <br></br>
-                      <span className="text-danger font-weight-bold">Or drag and drop them here</span>
-                    </div>
-                  )
-                :
-                  (imageArray || []).map((url,id) => (
-                    <div key={id} className="d-flex" style={{
-                        marginLeft: '10px',
-                    }}>
-                      <img className='img'  draggable="false" src={url ? url : ''} alt="..." style={{ width: 100, height: 100 }} />
-                      {
-                        isImageUploader ?
-                          <ImCross 
-                            className="p-1 im-cross" 
-                            onClick={()=>handleRemoveImage(id)} 
-                            size={20} 
-                          />
-                        : ''
-                      }
-                    </div>
-                  ))             
-            }
-          </div>
-          { dragActive && <div id="drag-file-element" onDragEnter={handleDrag} onDragLeave={handleDrag} onDragOver={handleDrag} onDrop={handleDrop}></div> }
-          { 
-            (imageArray === undefined)  ? '' :
-            ( imageArray.length && isImageUploader ) ? <a className="links" onClick={onButtonClick}>Upload More Images</a> : ''
-          }
-        </form>
-      )
-  }
-  </>
-)
+                  style={{ userSelect: 'none' }}
+                >
+                  {
+                    (imageArray2D[rowIndex2D] === undefined || imageArray2D[rowIndex2D].length == 0) ? 
+                        ( !isImageUploader ) ? '' : (
+                          <div style={{
+                            zIndex:'1', 
+                            backgroundImage: `url(${AiOutlineCloudUpload})`,
+                            margin:"0 auto"}}>                      
+                            <span variant="success">Choose files to Upload</span>
+                            <br></br>
+                            <span className="text-danger font-weight-bold">Or drag and drop them here</span>
+                          </div>
+                        )
+                      :
+                      (imageArray2D || []).map((imageRowArray,rowId) => {
+                        if(rowId == rowIndex2D){
+                          return (imageRowArray || []).map((url,id) => (
+                            <div key={id} className="d-flex" style={{
+                                marginLeft: '10px',
+                                zIndex: '1'
+                            }}>
+                              <img  draggable="false" src={url ? url : ''} alt="..." style={{ width: 100, height: 100 }} />
+                              {
+                                isImageUploader ?
+                                  <ImCross 
+                                    className="p-1" 
+                                    onClick={(e)=>{
+                                      e.stopPropagation();
+                                      handleRemoveImage2D(rowIndex2D,id)
+                                    }} 
+                                    size={20} 
+                                    style={{ 
+                                      marginLeft:'-10px', 
+                                      marginTop:'-10px', 
+                                      zIndex: '2', 
+                                      color: 'white', 
+                                      backgroundColor: '#f56969', 
+                                      borderRadius: '13px'
+                                    }} 
+                                  />
+                                : ''
+                              }
+                            </div>
+                          ))
+                        }
+                      })
+                                  
+                  }
+                </div>
+                { dragActive && <div id="drag-file-element" onDragEnter={handleDrag} onDragLeave={handleDrag} onDragOver={handleDrag} onDrop={handleDrop}></div> }
+                { 
+                  (imageArray2D[rowIndex2D] === undefined)  ? '' :
+                  ( imageArray2D[rowIndex2D]?.length && isImageUploader ) ? <Button  onClick={onButtonClick}>Upload More Files</Button> : ''
+                }
+              </form>
+            )
+        )
+          
+        :
+
+        (
+          (!isImageUploader && (imageArray === undefined || imageArray.length == 0) ) ? '' :
+            (
+              <form onClick={handleFormClick}
+                  id="form-file-upload" 
+                  onDragEnter={handleDrag} 
+                  onSubmit={(e) => e.preventDefault()}
+              >
+                <input 
+                  ref={inputRef} 
+                  id="input-file-upload" 
+                  type="file"
+                  controlId="validationFormik01" 
+                  onChange={handleChange}
+                  accept="image/jpg, image/jpeg, image/gif, image/bmp, image/svg" 
+                  multiple={true}
+                />
+                <div 
+                  className="image-gallery-uploader-container form-group multi-preview text-center d-flex align-items-center"
+                  ref={scrollContainerRef}
+                  
+                  onMouseDown={handleMouseDown}
+                  onMouseUp={handleMouseUp}
+                  onMouseMove={handleMouseMove}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+
+                  style={{ userSelect: 'none' }}
+                >
+                  {
+                    (imageArray === undefined || imageArray.length == 0) ? 
+                        ( !isImageUploader ) ? '' : (
+                          <div style={{
+                            backgroundImage: `url(${AiOutlineCloudUpload})`,
+                            margin:"0 auto"}}>                      
+                            <span variant="success">Choose images to Upload</span>
+                            <br></br>
+                            <span className="text-danger font-weight-bold">Or drag and drop them here</span>
+                          </div>
+                        )
+                      :
+                        (imageArray || []).map((url,id) => (
+                          <div key={id} className="d-flex" style={{
+                              marginLeft: '10px',
+                          }}>
+                            <img className='img'  draggable="false" src={url ? url : ''} alt="..." style={{ width: 100, height: 100 }} />
+                            {
+                              isImageUploader ?
+                                <ImCross 
+                                  className="p-1 im-cross" 
+                                  onClick={()=>handleRemoveImage(id)} 
+                                  size={20} 
+                                />
+                              : ''
+                            }
+                          </div>
+                        ))             
+                  }
+                </div>
+                { dragActive && <div id="drag-file-element" onDragEnter={handleDrag} onDragLeave={handleDrag} onDragOver={handleDrag} onDrop={handleDrop}></div> }
+                { 
+                  (imageArray === undefined)  ? '' :
+                  ( imageArray.length && isImageUploader ) ? <a className="links" onClick={onButtonClick}>Upload More Images</a> : ''
+                }
+              </form>
+            )
+        )
+      
+    }
+    
+    </>
+  )
 }
 
 export default ImageGalleryUploader

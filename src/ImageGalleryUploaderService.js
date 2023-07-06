@@ -19,6 +19,17 @@ export const fetchDBImages = async (images,images_url,imageViewerArray,setImageV
   setImageViewerArray([...imageViewerArray, ...fileObj ])
 }
 
+export const fetchDBImages2D = async (images2D,images_url,imageViewerArray,setImageViewerArray) => {
+  let  fileObj = [];
+  images2D.map((images, row) =>{
+    fileObj.push([]);
+    images.map((element, col) =>{
+      fileObj[row].push(`${images_url}${element.file}`)
+    });
+  })
+  setImageViewerArray([...imageViewerArray, ...fileObj ])
+}
+
 export const fetchEditDBImages = async (images,images_url,imageViewerArray,setImageViewerArray,imageFormdataArray,setImageFormdataArray) => {  
   let  fileObjView = [];
   let  fileObjFD = [];
@@ -37,4 +48,3 @@ export const fetchEditDBImages = async (images,images_url,imageViewerArray,setIm
   setImageViewerArray([...imageViewerArray, ...fileObjView ]);
   setImageFormdataArray([...imageFormdataArray, ...fileObjFD]);
 }
-
