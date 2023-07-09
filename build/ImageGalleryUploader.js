@@ -17,10 +17,28 @@ Object.defineProperty(exports, "fetchDBImages", {
     return _ImageGalleryUploaderService.fetchDBImages;
   }
 });
+Object.defineProperty(exports, "fetchDBImages2D", {
+  enumerable: true,
+  get: function get() {
+    return _ImageGalleryUploaderService.fetchDBImages2D;
+  }
+});
 Object.defineProperty(exports, "fetchEditDBImages", {
   enumerable: true,
   get: function get() {
     return _ImageGalleryUploaderService.fetchEditDBImages;
+  }
+});
+Object.defineProperty(exports, "fetchEditDBImages2D", {
+  enumerable: true,
+  get: function get() {
+    return _ImageGalleryUploaderService.fetchEditDBImages2D;
+  }
+});
+Object.defineProperty(exports, "removeImageRow2D", {
+  enumerable: true,
+  get: function get() {
+    return _ImageGalleryUploaderService.removeImageRow2D;
   }
 });
 var _react = _interopRequireWildcard(require("react"));
@@ -43,11 +61,18 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 var ImageGalleryUploader = function ImageGalleryUploader(_ref) {
-  var isImageUploader = _ref.isImageUploader,
+  var _imageArray2D$rowInde6;
+  var _ref$is2D = _ref.is2D,
+    is2D = _ref$is2D === void 0 ? false : _ref$is2D,
+    isImageUploader = _ref.isImageUploader,
     imageArray = _ref.imageArray,
     handleImage = _ref.handleImage,
     handleRemoveImage = _ref.handleRemoveImage,
-    validation = _ref.validation;
+    validation = _ref.validation,
+    rowIndex2D = _ref.rowIndex2D,
+    imageArray2D = _ref.imageArray2D,
+    handleImage2D = _ref.handleImage2D,
+    handleRemoveImage2D = _ref.handleRemoveImage2D;
   var _React$useState = _react["default"].useState(false),
     _React$useState2 = _slicedToArray(_React$useState, 2),
     dragActive = _React$useState2[0],
@@ -149,25 +174,97 @@ var ImageGalleryUploader = function ImageGalleryUploader(_ref) {
       return _ref2.apply(this, arguments);
     };
   }();
+  var handleAndValidateImage2D = /*#__PURE__*/function () {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(filesArray) {
+      var files, _ref6, _imageArray2D$rowInde, _imageArray2D$rowInde2, _imageArray2D$rowInde3, validImageFiles, filteredFiles, selectedFiles, filteredSelectedFiles;
+      return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+        while (1) switch (_context4.prev = _context4.next) {
+          case 0:
+            files = Array.from(filesArray);
+            if (!(files.length > 0)) {
+              _context4.next = 10;
+              break;
+            }
+            _context4.next = 4;
+            return Promise.all(files.map( /*#__PURE__*/function () {
+              var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(file) {
+                var isValid;
+                return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+                  while (1) switch (_context3.prev = _context3.next) {
+                    case 0:
+                      _context3.prev = 0;
+                      _context3.next = 3;
+                      return isValidImage(file);
+                    case 3:
+                      isValid = _context3.sent;
+                      return _context3.abrupt("return", isValid ? file : null);
+                    case 7:
+                      _context3.prev = 7;
+                      _context3.t0 = _context3["catch"](0);
+                      return _context3.abrupt("return", null);
+                    case 10:
+                    case "end":
+                      return _context3.stop();
+                  }
+                }, _callee3, null, [[0, 7]]);
+              }));
+              return function (_x5) {
+                return _ref5.apply(this, arguments);
+              };
+            }()));
+          case 4:
+            validImageFiles = _context4.sent;
+            filteredFiles = validImageFiles.filter(function (file) {
+              return file !== null;
+            });
+            if (validation.maxFileCount && ((_ref6 = files.length + ((_imageArray2D$rowInde = imageArray2D[rowIndex2D]) === null || _imageArray2D$rowInde === void 0 ? void 0 : _imageArray2D$rowInde.length)) !== null && _ref6 !== void 0 ? _ref6 : 0) > validation.maxFileCount) {
+              (0, _Toast.notify)("Maximum file count exceeded. Only ".concat(validation.maxFileCount, " files will be selected."), _MessageConst.ERROR);
+            }
+            selectedFiles = filteredFiles.slice(0, validation.maxFileCount - ((_imageArray2D$rowInde2 = (_imageArray2D$rowInde3 = imageArray2D[rowIndex2D]) === null || _imageArray2D$rowInde3 === void 0 ? void 0 : _imageArray2D$rowInde3.length) !== null && _imageArray2D$rowInde2 !== void 0 ? _imageArray2D$rowInde2 : 0));
+            filteredSelectedFiles = selectedFiles.filter(function (file) {
+              if (file && file.size > validation.maxFileSize * 1024 * 1024) {
+                (0, _Toast.notify)("File size exceeds ".concat(validation.maxFileSize, "MB: ").concat(file.name, ". Please select a smaller file."), _MessageConst.ERROR);
+              }
+              return file.size <= validation.maxFileSize * 1024 * 1024;
+            });
+            if (filteredSelectedFiles.length > 0) {
+              handleImage2D(rowIndex2D, filteredSelectedFiles);
+            } else {
+              (0, _Toast.notify)("There is no valid images to import", _MessageConst.ERROR);
+            }
+          case 10:
+          case "end":
+            return _context4.stop();
+        }
+      }, _callee4);
+    }));
+    return function handleAndValidateImage2D(_x4) {
+      return _ref4.apply(this, arguments);
+    };
+  }();
   var handleDrop = /*#__PURE__*/function () {
-    var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(e) {
-      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-        while (1) switch (_context3.prev = _context3.next) {
+    var _ref7 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(e) {
+      return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+        while (1) switch (_context5.prev = _context5.next) {
           case 0:
             e.preventDefault();
             e.stopPropagation();
             if (isImageUploader) {
               setDragActive(false);
-              handleAndValidateImage(e.dataTransfer.files);
+              if (is2D) {
+                handleAndValidateImage2D(e.dataTransfer.files);
+              } else {
+                handleAndValidateImage(e.dataTransfer.files);
+              }
             }
           case 3:
           case "end":
-            return _context3.stop();
+            return _context5.stop();
         }
-      }, _callee3);
+      }, _callee5);
     }));
-    return function handleDrop(_x4) {
-      return _ref4.apply(this, arguments);
+    return function handleDrop(_x6) {
+      return _ref7.apply(this, arguments);
     };
   }();
 
@@ -176,7 +273,11 @@ var ImageGalleryUploader = function ImageGalleryUploader(_ref) {
     e.preventDefault();
     if (isImageUploader) {
       if (e.target.files && e.target.files[0]) {
-        handleAndValidateImage(e.target.files);
+        if (is2D) {
+          handleAndValidateImage2D(e.target.files);
+        } else {
+          handleAndValidateImage(e.target.files);
+        }
       }
     }
   };
@@ -189,6 +290,12 @@ var ImageGalleryUploader = function ImageGalleryUploader(_ref) {
   };
   var handleFormClick = function handleFormClick(item) {
     if (!imageArray.length) {
+      onButtonClick();
+    }
+  };
+  var handleFormClick2D = function handleFormClick2D(item) {
+    var _imageArray2D$rowInde4, _imageArray2D$rowInde5;
+    if (!((_imageArray2D$rowInde4 = (_imageArray2D$rowInde5 = imageArray2D[rowIndex2D]) === null || _imageArray2D$rowInde5 === void 0 ? void 0 : _imageArray2D$rowInde5.length) !== null && _imageArray2D$rowInde4 !== void 0 ? _imageArray2D$rowInde4 : 0)) {
       onButtonClick();
     }
   };
@@ -299,7 +406,94 @@ var ImageGalleryUploader = function ImageGalleryUploader(_ref) {
       window.removeEventListener('mouseup', handleWindowMouseUp);
     };
   }, [isMouseDown]);
-  return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, !isImageUploader && (imageArray === undefined || imageArray.length == 0) ? '' : /*#__PURE__*/_react["default"].createElement("form", {
+  return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, is2D ? !isImageUploader && (imageArray2D[rowIndex2D] === undefined || imageArray2D[rowIndex2D].length == 0) ? '' : /*#__PURE__*/_react["default"].createElement("form", {
+    onClick: is2D ? handleFormClick2D : handleFormClick,
+    id: "form-file-upload",
+    onDragEnter: handleDrag,
+    onSubmit: function onSubmit(e) {
+      return e.preventDefault();
+    }
+  }, /*#__PURE__*/_react["default"].createElement("input", {
+    ref: inputRef,
+    id: "input-file-upload" + rowIndex2D,
+    "class": "input-file-upload",
+    type: "file",
+    controlId: "validationFormik01",
+    onChange: handleChange,
+    accept: "image/jpg, image/jpeg, image/gif, image/bmp, image/svg",
+    multiple: true
+  }), /*#__PURE__*/_react["default"].createElement("div", {
+    className: "image-gallery-uploader-container form-group multi-preview text-center d-flex align-items-center",
+    ref: scrollContainerRef,
+    onClick: function onClick(e) {
+      e.stopPropagation();
+      if (isImageUploader & (imageArray2D[rowIndex2D] === undefined || imageArray2D[rowIndex2D].length == 0)) {
+        inputRef.current.click();
+      }
+    },
+    onMouseDown: handleMouseDown,
+    onMouseUp: handleMouseUp,
+    onMouseMove: handleMouseMove,
+    onMouseEnter: handleMouseEnter,
+    onMouseLeave: handleMouseLeave,
+    style: {
+      userSelect: 'none'
+    }
+  }, imageArray2D[rowIndex2D] === undefined || imageArray2D[rowIndex2D].length == 0 ? !isImageUploader ? '' : /*#__PURE__*/_react["default"].createElement("div", {
+    style: {
+      zIndex: '1',
+      backgroundImage: "url(".concat(_ai.AiOutlineCloudUpload, ")"),
+      margin: "0 auto"
+    }
+  }, /*#__PURE__*/_react["default"].createElement("span", {
+    variant: "success"
+  }, "Choose files to Upload"), /*#__PURE__*/_react["default"].createElement("br", null), /*#__PURE__*/_react["default"].createElement("span", {
+    className: "text-danger font-weight-bold"
+  }, "Or drag and drop them here")) : (imageArray2D || []).map(function (imageRowArray, rowId) {
+    if (rowId == rowIndex2D) {
+      return (imageRowArray || []).map(function (url, id) {
+        return /*#__PURE__*/_react["default"].createElement("div", {
+          key: id,
+          className: "d-flex",
+          style: {
+            marginLeft: '10px',
+            zIndex: '1'
+          }
+        }, /*#__PURE__*/_react["default"].createElement("img", {
+          draggable: "false",
+          src: url ? url : '',
+          alt: "...",
+          style: {
+            width: 100,
+            height: 100
+          }
+        }), isImageUploader ? /*#__PURE__*/_react["default"].createElement(_im.ImCross, {
+          className: "p-1",
+          onClick: function onClick(e) {
+            e.stopPropagation();
+            handleRemoveImage2D(rowIndex2D, id);
+          },
+          size: 20,
+          style: {
+            marginLeft: '-10px',
+            marginTop: '-10px',
+            zIndex: '2',
+            color: 'white',
+            backgroundColor: '#f56969',
+            borderRadius: '13px'
+          }
+        }) : '');
+      });
+    }
+  })), dragActive && /*#__PURE__*/_react["default"].createElement("div", {
+    id: "drag-file-element",
+    onDragEnter: handleDrag,
+    onDragLeave: handleDrag,
+    onDragOver: handleDrag,
+    onDrop: handleDrop
+  }), imageArray2D[rowIndex2D] === undefined ? '' : (_imageArray2D$rowInde6 = imageArray2D[rowIndex2D]) !== null && _imageArray2D$rowInde6 !== void 0 && _imageArray2D$rowInde6.length && isImageUploader ? /*#__PURE__*/_react["default"].createElement(_reactBootstrap.Button, {
+    onClick: onButtonClick
+  }, "Upload More Files") : '') : !isImageUploader && (imageArray === undefined || imageArray.length == 0) ? '' : /*#__PURE__*/_react["default"].createElement("form", {
     onClick: handleFormClick,
     id: "form-file-upload",
     onDragEnter: handleDrag,

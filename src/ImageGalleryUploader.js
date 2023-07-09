@@ -6,7 +6,7 @@ import { AiOutlineCloudUpload } from "react-icons/ai";
 import { notify } from "./Toast";
 import { SUCCESS, ERROR } from "./MessageConst";
 import './ImageGalleryUploader.css';
-export {convertImageUrlToFile,fetchDBImages,fetchEditDBImages} from './ImageGalleryUploaderService';
+export {convertImageUrlToFile,fetchDBImages,fetchDBImages2D,fetchEditDBImages,fetchEditDBImages2D,removeImageRow2D} from './ImageGalleryUploaderService';
 
 const ImageGalleryUploader = ({is2D = false, isImageUploader, imageArray, handleImage, handleRemoveImage, validation, rowIndex2D, imageArray2D, handleImage2D, handleRemoveImage2D}) => {
   const [dragActive, setDragActive] = React.useState(false);
