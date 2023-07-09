@@ -8,7 +8,7 @@ import { SUCCESS, ERROR } from "./MessageConst";
 import './ImageGalleryUploader.css';
 export {convertImageUrlToFile,fetchDBImages,fetchDBImages2D,fetchEditDBImages,fetchEditDBImages2D,removeImageRow2D} from './ImageGalleryUploaderService';
 
-const ImageGalleryUploader = ({is2D = false, isImageUploader, imageArray, handleImage, handleRemoveImage, validation, rowIndex2D, imageArray2D, handleImage2D, handleRemoveImage2D}) => {
+export const ImageGalleryUploader = ({is2D = false, isImageUploader, imageArray, handleImage, handleRemoveImage, validation, rowIndex2D, imageArray2D, handleImage2D, handleRemoveImage2D}) => {
   const [dragActive, setDragActive] = React.useState(false);
   // ref
   const inputRef = React.useRef(null);
@@ -457,4 +457,3 @@ return (
   )
 }
 
-export default ImageGalleryUploader

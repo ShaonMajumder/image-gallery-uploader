@@ -4,13 +4,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.ImageGalleryUploader = void 0;
 Object.defineProperty(exports, "convertImageUrlToFile", {
   enumerable: true,
   get: function get() {
     return _ImageGalleryUploaderService.convertImageUrlToFile;
   }
 });
-exports["default"] = void 0;
 Object.defineProperty(exports, "fetchDBImages", {
   enumerable: true,
   get: function get() {
@@ -562,5 +562,4 @@ var ImageGalleryUploader = function ImageGalleryUploader(_ref) {
     onClick: onButtonClick
   }, "Upload More Images") : ''));
 };
-var _default = ImageGalleryUploader;
-exports["default"] = _default;
+exports.ImageGalleryUploader = ImageGalleryUploader;
